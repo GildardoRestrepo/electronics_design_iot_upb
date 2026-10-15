@@ -1,6 +1,5 @@
 ---
-tags:
-  - tipo/clase
+type: clase
 ---
 
 # Evidencias práctica #6: Diseño Electrónico

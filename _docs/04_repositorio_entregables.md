@@ -1,6 +1,5 @@
 ---
-tags:
-  - tipo/clase
+type: clase
 ---
 
 # Práctica #4: Diseño Electrónico (Repositorio de entregables)
