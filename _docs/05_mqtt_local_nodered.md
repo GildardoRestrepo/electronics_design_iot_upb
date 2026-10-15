@@ -817,7 +817,5 @@ todos reciben. El estado real del dispositivo es observable gracias al LWT, y el
 completo compila desde cero en cualquier máquina a partir del repositorio.
 
 ---
-
 ## Enlaces
-
-[[ing_electronica|Ing. Electrónica]]
+[[diseno_electronico_iot|Diseño Electrónico IoT]]

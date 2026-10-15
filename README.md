@@ -129,12 +129,12 @@ divide en dos entornos de PlatformIO: un **sensor** (DHT11, botón `sw`, `led1`/
 **observador** que solo se suscribe, posiblemente desde otra red.
 
 Consultar la bitácora de cada práctica en [`_docs/`](_docs):
-[Práctica 1](_docs/01_ubidots_connection.md) ·
-[Práctica 2](_docs/02_ubidots_subscription.md) ·
-[Práctica 3](_docs/03_webserver_accesspoint.md) ·
-[Práctica 4](_docs/04_repositorio_entregables.md) ·
-[Práctica 5](_docs/05_mqtt_local_nodered.md) ·
-[Práctica 6](_docs/06_mqtt_in_aws.md).
+Práctica 1 ·
+Práctica 2 ·
+Práctica 3 ·
+Práctica 4 ·
+Práctica 5 ·
+Práctica 6.
 
 ---
 
@@ -157,7 +157,7 @@ Consultar la bitácora de cada práctica en [`_docs/`](_docs):
 
 ### Práctica 06 (PlatformIO, dos firmwares)
 
-1. Monta el servidor en AWS siguiendo la [bitácora de la práctica 6](_docs/06_mqtt_in_aws.md).
+1. Monta el servidor en AWS siguiendo la bitácora de la práctica 6.
 2. Abre `06_mqtt_in_aws/esp32_mqtt_aws`, copia `include/secrets.h.example` como
    `include/secrets.h` y rellena el Wi-Fi, la **IP pública** de la instancia y el usuario MQTT.
 3. Carga cada placa con su entorno: `pio run -e sensor -t upload` y
@@ -197,8 +197,6 @@ además el usuario y la clave del broker). Al estar
 
 Distribuido bajo la licencia **MIT**. Consulta el archivo [LICENSE](LICENSE).
 
-
 ---
 ## Enlaces
-[[proyectos_personal|Proyectos Electrónica]]
-[[ing_electronica|Ing. Electrónica]]
+[[diseno_electronico_iot|Diseño Electrónico IoT]]

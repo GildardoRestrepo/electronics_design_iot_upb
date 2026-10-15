@@ -96,7 +96,5 @@ sin credenciales expuestas y con una estructura y unas convenciones que las entr
 posteriores solo tienen que continuar.
 
 ---
-
 ## Enlaces
-
-[[ing_electronica|Ing. Electrónica]]
+[[diseno_electronico_iot|Diseño Electrónico IoT]]

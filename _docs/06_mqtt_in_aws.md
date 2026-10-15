@@ -435,7 +435,7 @@ pio device monitor                   # ver el log por serie
 ```
 
 > La carga en el TTGO T-Display puede requerir el procedimiento de BOOT (GPIO 0) descrito en
-> el [README](../README.md#cómo-compilar-y-cargar), incluido el ciclo de alimentación final.
+> el README, incluido el ciclo de alimentación final.
 
 Si no conecta, la pantalla y el monitor serie muestran la **causa probable**:
 
@@ -657,7 +657,5 @@ tras un reinicio.
 - Guía de la práctica: *Práctica Servidor MQTT (AWS + Mosquitto)*, Prof. Fabio Guzmán, UPB.
 
 ---
-
 ## Enlaces
-
-[[ing_electronica|Ing. Electrónica]]
+[[diseno_electronico_iot|Diseño Electrónico IoT]]

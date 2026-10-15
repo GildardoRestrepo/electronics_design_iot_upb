@@ -113,7 +113,5 @@ dashboard cambiando el color del indicador, y permite reconfigurar su red Wi-Fi 
 navegador sin recompilar, conservando la configuración tras apagones o reinicios.
 
 ---
-
 ## Enlaces
-
-[[ing_electronica|Ing. Electrónica]]
+[[diseno_electronico_iot|Diseño Electrónico IoT]]
