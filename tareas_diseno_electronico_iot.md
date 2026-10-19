@@ -6,7 +6,8 @@ created: 2026-10-14
 > [!info] Cómo usar
 > Una tarea por línea: `- [ ] Qué hacer 📅 AAAA-MM-DD` (⏫ = prioridad alta). Márcala al terminar. Todas las tareas de la bóveda se ven juntas en `tablero.md`.
 
-- [ ] Práctica 06: crear la instancia en AWS y completar las evidencias
+- [x] Práctica 06: crear la instancia en AWS y completar las evidencias ✅ 2026-10-16
+- [ ] Práctica 07: Introducción al flujo de trabajo KiCAD 📅 2026-10-21
 
 ---
 ## Enlaces
