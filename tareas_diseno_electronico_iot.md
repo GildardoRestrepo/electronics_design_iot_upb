@@ -7,7 +7,10 @@ created: 2026-10-14
 > Una tarea por línea: `- [ ] Qué hacer 📅 AAAA-MM-DD` (⏫ = prioridad alta). Márcala al terminar. Todas las tareas de la bóveda se ven juntas en `tablero.md`.
 
 - [x] Práctica 06: crear la instancia en AWS y completar las evidencias ✅ 2026-10-16
-- [ ] Práctica 07: Introducción al flujo de trabajo KiCAD 📅 2026-10-21
+- [ ] Práctica 08: Introducción al flujo de trabajo KiCAD 📅 2026-10-24
+- [ ] Práctica 09: Diseño de una fuente de poder en KiCAD  📅 2026-10-28
+- [ ] Práctica 10: Diseño en 4 capas 📅 2026-11-04
+- [ ] Trabajo final: Diseño de una tarjeta que incluya ESP32  📅 2026-11-13
 
 ---
 ## Enlaces
