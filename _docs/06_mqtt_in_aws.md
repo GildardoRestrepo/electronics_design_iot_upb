@@ -1,5 +1,5 @@
 ---
-type: clase
+type: referencia
 ---
 
 # Práctica #6: Diseño Electrónico (MQTT en la nube: Mosquitto + Node-RED en AWS)

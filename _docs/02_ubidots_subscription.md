@@ -1,5 +1,5 @@
 ---
-type: clase
+type: referencia
 ---
 
 # Práctica #2: Diseño Electrónico (UBIDOTS)

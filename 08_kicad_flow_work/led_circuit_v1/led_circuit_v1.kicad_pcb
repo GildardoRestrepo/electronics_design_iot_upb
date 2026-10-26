@@ -1351,6 +1351,18 @@
 		(layer "Edge.Cuts")
 		(uuid "c1032080-1add-4de3-ba84-60746241aadf")
 	)
+	(gr_text "By:Gilbert"
+		(at 202 100 0)
+		(layer "B.SilkS")
+		(uuid "77bb1dcb-e36e-49e2-97a3-2bbd3ab94577")
+		(effects
+			(font
+				(size 2 2)
+				(thickness 0.3)
+			)
+			(justify mirror)
+		)
+	)
 	(segment
 		(start 170 100.5)
 		(end 173.5 97)

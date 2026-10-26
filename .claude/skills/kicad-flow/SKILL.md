@@ -45,5 +45,7 @@ Las capturas muestran lo que el usuario ve en ese momento (selecciones, errores 
 - Coordenadas en mm; el esquemático usa grilla de 1.27 mm (pines en múltiplos de 2.54).
 - Para PCB, preferir scripts con `pcbnew` (cargar, modificar, `board.Save()`) sobre editar texto a mano cuando se trate de pistas o contornos.
 - Al cambiar un footprint con `pcbnew` (`FootprintLoad`), conservar la paridad: `SetPath()` del footprint viejo, `SetFPID(LIB_ID("<lib>", "<nombre>"))` con el nombre de biblioteca, copiar los campos (p. ej. `Description`) recorriendo `GetFields()` y reasignar las redes de los pads.
+- Hacer **un reemplazo de footprint por ejecución** de Python: tras `b.Remove()`/`b.Add()`, SWIG devuelve `SwigPyObject` sin tipo para los demás footprints. Colocar en otra ejecución.
+- Al cambiar un footprint en el `.kicad_sch` por texto, no tocar la sección `lib_symbols` (es la copia de la biblioteca; si cambia, el ERC avisa `lib_symbol_mismatch`). Editar solo la propiedad del símbolo colocado.
 - Los pads sin uso de un símbolo con no-connect deben llevar la red `unconnected-(<Ref><Unidad>-<Pin>-Pad<N>)` en el PCB (lo mismo que hace F8).
 - Tras cualquier edición, correr el script de verificación antes de entregar.

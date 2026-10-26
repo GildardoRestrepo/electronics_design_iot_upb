@@ -1,5 +1,5 @@
 ---
-type: clase
+type: referencia
 ---
 
 # Práctica #5: Diseño Electrónico (MQTT local: Mosquitto + Node-RED)

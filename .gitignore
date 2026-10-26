@@ -41,3 +41,7 @@ fp-info-cache
 *.lck
 \#auto_saved_files\#
 _autosave-*
+
+
+# --- tareas ---
+tareas_diseno_electronico_iot.md

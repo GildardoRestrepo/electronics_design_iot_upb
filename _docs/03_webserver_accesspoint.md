@@ -1,5 +1,5 @@
 ---
-type: clase
+type: referencia
 ---
 
 # Práctica #3: Diseño Electrónico (Access Point + WebServer)
