@@ -50,7 +50,7 @@ El sketch combina las prácticas anteriores con el nuevo requerimiento:
 
 ## Sketch de esta práctica
 
-- [`ubidots_dht11_ap`](../03_weberver_accespoint/ubidots_dht11_ap/ubidots_dht11_ap.ino) —
+- [`ubidots_dht11_ap`](../03_webserver_accesspoint/ubidots_dht11_ap/ubidots_dht11_ap.ino) —
   sketch completo de la práctica.
 
 ## Explicación técnica

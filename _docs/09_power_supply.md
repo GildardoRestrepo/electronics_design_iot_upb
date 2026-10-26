@@ -9,101 +9,65 @@ type: referencia
 **Guía:** Diseño de una fuente de poder en KiCad — Prof. Fabio Guzmán, UPB
 
 ---
-# Fuente de poder para protoboard — Especificación (v1)
 
-Práctica 09 de Diseño Electrónico IoT. Basada en el módulo de referencia (jack DC → 7805 + LM317 → rieles seleccionables por jumper) con cuatro correcciones: resistencia del LED, valor de C3, divisor del LM317 y protección contra polaridad invertida.
+## Objetivo
 
-## Requisitos
+Diseñar en KiCad un módulo de alimentación para protoboard: un adaptador DC entra por un jack, un LM7805 y un LM317 generan **5 V** y **3.3 V**, y dos selectores con jumper eligen qué tensión llega a cada riel de la protoboard y a su bornera. El diseño parte de una placa de referencia y le corrige cuatro errores de valores y protección.
 
-| Parámetro | Valor |
-|---|---|
-| Entrada | Adaptador DC 7.5–12 V, centro positivo, jack 5.5 × 2.1 mm. **Recomendado: 9 V** |
-| Salidas | +5 V (LM7805) y +3.3 V (LM317), seleccionables por riel con jumper |
-| Corriente por riel (ver límites térmicos) | ≈ 200 mA con 12 V · ≈ 280 mA con 9 V |
-| Protección | Diodo Schottky en serie contra polaridad invertida |
-| Indicador | LED de encendido después del interruptor |
-| Placa | 2 capas, ≈ 34 × 52.7 mm con muescas para la protoboard (a confirmar midiendo) |
+## Archivos de esta práctica
 
-## Diagrama de bloques
+- Especificación completa (requisitos, redes, cálculos, BOM): [`09_power_supply/especificacion.md`](../09_power_supply/especificacion.md)
+- Proyecto KiCad: [`09_power_supply/power_supply_v1`](../09_power_supply/power_supply_v1)
+- Esquemático en PDF: [`out/power_supply_v1.pdf`](../09_power_supply/power_supply_v1/out/power_supply_v1.pdf)
 
-```
-J1 (jack) ──D2 1N5819──► PWR_INPUT ──S1──► VIN ─┬─ U1 LM7805 ──► +5V ──┐
-                                                ├─ U2 LM317  ──► +3V3 ─┤
-                                                └─ R1 + D1 (LED)       │
-                         J6/J7 (jumper 5V | 3V3) ◄─────────────────────┘
-                              └─► PWR_OUT_TOP / PWR_OUT_BOT ──► J5/J4 (riel) y J3/J2 (bornera)
-```
+## Correcciones sobre la referencia
 
-## Redes
+| Elemento | Referencia | Este diseño | Motivo |
+|---|---|---|---|
+| R1 (LED) | 330 Ω | **1 kΩ** | Con 12 V daba ≈ 29 mA y ≈ 0.28 W: excede el LED y una resistencia de 1/4 W |
+| C1 (salida 3.3 V) | sin valor | **10 µF / 16 V** | El LM317 pide ≥ 1 µF a la salida |
+| R2 / R3 (divisor LM317) | 330 / 560 Ω | **240 / 390 Ω** | 3.30 V en lugar de 3.40 V, y 5.2 mA de carga mínima en lugar de 3.8 mA |
+| D1 (nuevo) | — | **1N5819** entre J1 y SW1 | Protección contra polaridad invertida |
 
-| Red | Desde → hasta |
-|---|---|
-| `VIN_JACK` | J1 pin 1 (centro) → ánodo de D2 |
-| `PWR_INPUT` | cátodo de D2 → S1 común (pin 2) |
-| `VIN` | S1 pin 1 → U1 VI, U2 VI, C1, R1. *(La referencia la llamaba `12V`; se renombra porque la entrada puede ser 9 V)* |
-| `+5V` | U1 VO, C2, J6/J7 pin 3 |
-| `+3V3` | U2 VO, R2, C3, J6/J7 pin 1 |
-| `ADJ` | U2 ADJ, R2, R3 |
-| `PWR_OUT_TOP` | J6 pin 2, J5 pin 2, J3 pin 2 |
-| `PWR_OUT_BOT` | J7 pin 2, J4 pin 2, J2 pin 2 |
-| `GND` | J1 pines 2 y 3, U1 GND, C1–C3, R3, LED (cátodo), J5/J4/J3/J2 pin 1 |
+## Cálculos principales
 
-S1 pin 3 lleva no-connect. Usar los símbolos de potencia `+5V`, `+3V3`, `GND` (librería `power`) en lugar de etiquetas sueltas, y `PWR_FLAG` en `VIN` y `GND`.
+- **Salida de 3.3 V:** Vout = 1.25 × (1 + 390/240) + 50 µA × 390 ≈ **3.30 V**.
+- **LED indicador:** 9.6 mA y 91 mW con 12 V; 6.6 mA y 43 mW con 9 V.
+- **Entrada mínima:** el 7805 necesita ≥ 7 V y el 1N5819 quita ≈ 0.45 V → adaptador de **≥ 7.5 V** (recomendado 9 V).
+- **Límite térmico** (TO-220 sin disipador, θJA ≈ 50 °C/W, 1.5 W por regulador):
 
-## Cálculos
-
-**Diodo de protección (D2, 1N5819):** Schottky 1 A / 40 V, caída ≈ 0.45 V. Con la polaridad invertida bloquea y no circula corriente. La entrada efectiva queda en Vin − 0.45 V, así que el 7805 (que necesita ≥ 7 V) exige un adaptador de ≥ 7.5 V.
-
-**Divisor del LM317 (R2 = 240 Ω, R3 = 390 Ω):**
-Vout = 1.25 V × (1 + R3/R2) + I_ADJ × R3 = 1.25 × (1 + 390/240) + 50 µA × 390 ≈ **3.30 V**.
-Corriente del divisor = 1.25 V / 240 Ω = **5.2 mA**, por encima de la carga mínima del LM317 (3.5 mA típ.). La referencia (330/560) daba 3.40 V y solo 3.8 mA.
-
-**LED indicador (R1 = 1 kΩ):**
-
-| Entrada | I_LED | P_R1 |
+| Entrada | I máx 5 V | I máx 3.3 V |
 |---|---|---|
-| 9 V | 6.6 mA | 43 mW |
-| 12 V | 9.6 mA | 91 mW |
+| 9 V | ≈ 420 mA | ≈ 285 mA |
+| 12 V | ≈ 230 mA | ≈ 180 mA |
 
-La referencia (330 Ω a 12 V) daba ≈ 29 mA y ≈ 0.28 W, por encima de lo que aguanta el LED y la resistencia de 1/4 W.
+## Esquemático
 
-**Límites térmicos (TO-220 acostado, sin disipador):** θJA ≈ 50 °C/W. Con un presupuesto de 1.5 W por regulador, Tj ≈ 25 + 1.5 × 50 = 100 °C (máx. 125 °C).
+18 componentes en dos bloques: entrada y 5 V (J1, D1, SW1, C3, U2 LM7805, C2) y 3.3 V (U1 LM317, R2, R3, C1, R1 y D2 como indicador), más los conectores de salida (J6/J7 selectores, J4/J5 al riel, J2/J3 borneras).
 
-| Entrada | Caída 7805 | I máx 5 V | Caída LM317 | I máx 3.3 V |
-|---|---|---|---|---|
-| 9 V | 3.55 V | ≈ 420 mA | 5.25 V | ≈ 285 mA |
-| 12 V | 6.55 V | ≈ 230 mA | 8.25 V | ≈ 180 mA |
+En la revisión se corrigieron dos errores de conexión antes del PCB:
 
-Para más corriente hace falta disipador o un regulador conmutado; queda fuera del alcance de esta versión.
+- La etiqueta de la salida del 7805 decía `Vin`; pasó a `5V`, y `VIN` quedó en la entrada de los reguladores.
+- Las etiquetas `3.3v` y `3.3V` formaban dos redes distintas (KiCad distingue mayúsculas), así que el jumper no recibía 3.3 V. Se unificaron.
 
-## Lista de materiales (BOM)
+**ERC:** 0 errores, 0 advertencias.
 
-| Ref | Valor | Símbolo KiCad | Footprint KiCad | Nota |
-|---|---|---|---|---|
-| J1 | Jack DC 5.5 × 2.1 mm | `Connector:Barrel_Jack_Switch` | `Connector_BarrelJack:BarrelJack_Horizontal` | Confirmar con el jack real |
-| D2 | 1N5819 | `Diode:1N5819` | `Diode_THT:D_DO-41_SOD81_P10.16mm_Horizontal` | **Nuevo**: protección de polaridad |
-| S1 | EG1218 (SPDT) | `Switch:SW_SPDT` | `Button_Switch_THT:SW_Slide_SPDT_Straight_CK_OS102011MS2Q` | KiCad no trae el EG1218; ver pendientes |
-| C1 | 10 µF / 25 V electrolítico | `Device:C_Polarized` | `Capacitor_THT:CP_Radial_D5.0mm_P2.00mm` | Entrada |
-| U1 | LM7805 | `Regulator_Linear:LM7805_TO220` | `Package_TO_SOT_THT:TO-220-3_Horizontal_TabDown` | |
-| C2 | 0.1 µF cerámico | `Device:C` | `Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P5.00mm` | Salida 5 V |
-| U2 | LM317 | `Regulator_Linear:LM317_TO-220` | `Package_TO_SOT_THT:TO-220-3_Horizontal_TabDown` | Pines: 1 ADJ, 2 VO, 3 VI |
-| R2 | 240 Ω 1 % 1/4 W | `Device:R` | `Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal` | **Corregido** (antes 330) |
-| R3 | 390 Ω 1 % 1/4 W | `Device:R` | ídem | **Corregido** (antes 560) |
-| C3 | 10 µF / 16 V electrolítico | `Device:C_Polarized` | `Capacitor_THT:CP_Radial_D5.0mm_P2.00mm` | **Corregido** (antes sin valor) |
-| R1 | 1 kΩ 1/4 W | `Device:R` | ídem R2 | **Corregido** (antes 330) |
-| D1 | LED rojo 5 mm | `Device:LED` | `LED_THT:LED_D5.0mm` | |
-| J6, J7 | Header 1×3 + jumper | `Connector:Conn_01x03_Pin` | `Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical` | 1 = 3V3, 2 = salida, 3 = 5V |
-| J5, J4 | Header 1×2 | `Connector:Conn_01x02_Pin` | `Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical` | Se clavan en el riel; 1 = GND, 2 = salida |
-| J3, J2 | Bornera 2 pines 5 mm | `Connector:Screw_Terminal_01x02` | `TerminalBlock_Phoenix:TerminalBlock_Phoenix_MKDS-1,5-2_1x02_P5.00mm_Horizontal` | 1 = GND, 2 = salida |
+## PCB
 
-Opcional recomendado: C4 de 0.1 µF cerámico junto a la entrada del LM317.
+- **Placa:** 2 capas, 34.06 × 52.70 mm, con una muesca en el lado derecho (7.2 mm de profundidad) para encajar sobre la protoboard. J5 y J4 quedan a 45.72 mm (18 pasos de 2.54 mm) para clavarse en los rieles.
+- **Colocación:** los reguladores van acostados con la aleta fuera del borde izquierdo, como en la referencia (permite atornillar un disipador). El jack tiene la boca en el borde izquierdo. Las resistencias y el 1N5819 usan paso de 7.62 mm para caber en la columna central.
+- **Clases de red:** Power (0.8 mm, separación 0.3 mm) para alimentación, salidas y GND; Default (0.4 mm) para el ajuste del LM317 y el LED.
+- **Ruteo:** las redes de 3.3 V y 5 V bajan por B.Cu en líneas verticales que unen el selector de arriba (J7) con el de abajo (J6). La salida inferior va por B.Cu junto al borde. Una sola vía.
+- **GND:** plano en B.Cu con alivios térmicos; el pad GND del 7805 tiene conexión sólida para disipar mejor.
+- **Firma:** "By:Gilbert" en la serigrafía inferior.
 
-## Pendientes antes de la fase 4 (colocación)
+**DRC con paridad esquemático/PCB:** 0 errores eléctricos y 0 conexiones pendientes. Quedan 4 avisos de serigrafía recortada por el borde, que corresponden a los reguladores que sobresalen a propósito.
 
-- [ ] Medir el EG1218 real (separación de pines). Si no coincide con el CK OS102011MS2Q (2 mm), se hace un footprint propio.
-- [ ] Confirmar el modelo del jack DC.
-- [ ] Medir en la protoboard la distancia entre los rieles de arriba y de abajo, y qué riel es + y cuál −. Esto fija dónde van J5 y J4 y el alto de la placa.
+## Evidencias
 
+![Render superior](../09_power_supply/power_supply_v1/out/render_top.png)
+![Render inferior](../09_power_supply/power_supply_v1/out/render_bottom.png)
+![Render isométrico](../09_power_supply/power_supply_v1/out/render_iso.png)
 
 ---
 ## Enlaces
